@@ -1,128 +1,128 @@
 {
   "course": {
-    "title": "IA Generativa",
+    "title": "Generative AI",
     "subtitle": "Wiki · PPGI058 · UFAL · 2026.2",
-    "tagline": "A wiki da disciplina de Inteligência Artificial Generativa. Cada grupo tem sua seção e a alimenta depois da apresentação."
+    "tagline": "The class wiki for Generative Artificial Intelligence. Each group has its own section and fills it in after presenting."
   },
   "sections": [
     {
       "name": "Large Language Model",
       "slug": "large-language-model",
-      "description": "Construindo um LLM do zero, de Sebastian Raschka (Build a Large Language Model (From Scratch)): a teoria dos capítulos 1 a 3 e a aula prática em notebooks, do tokenizador ao GPT-2 que segue instruções.",
+      "description": "Building an LLM from scratch, following Sebastian Raschka's Build a Large Language Model (From Scratch): the theory of chapters 1 to 3 and a hands-on class in notebooks, from the tokenizer to a GPT-2 that follows instructions.",
       "children": [
         {
-          "name": "Teoria",
-          "slug": "teoria",
-          "description": "Os conceitos por trás dos LLMs, seguindo os capítulos 1 a 3 de Build a Large Language Model (From Scratch), de Sebastian Raschka: o que é um LLM e a arquitetura Transformer, como o texto vira entrada numérica e como funciona o mecanismo de atenção.",
+          "name": "Theory",
+          "slug": "theory",
+          "description": "The concepts behind LLMs, following chapters 1 to 3 of the book: what an LLM is and the Transformer architecture, how text becomes numeric input, and how the attention mechanism works.",
           "children": [
             {
-              "name": "Visão geral",
-              "slug": "visao-geral",
-              "description": "O roteiro da disciplina, os três estágios de construção de um LLM e os slides da apresentação.",
-              "markdown": "large-language-model/teoria/visao-geral.md"
+              "name": "Overview",
+              "slug": "overview",
+              "description": "The course roadmap, the three stages of building an LLM, and the presentation slides.",
+              "markdown": "large-language-model/theory/overview.md"
             },
             {
-              "name": "Cap. 1 · Compreendendo LLMs",
-              "slug": "compreendendo-llms",
-              "description": "O que é um LLM, suas aplicações, pré-treinamento e fine-tuning, a arquitetura Transformer (BERT × GPT), zero-shot e few-shot, e o plano para construir um LLM do zero.",
-              "markdown": "large-language-model/teoria/01-compreendendo-llms.md"
+              "name": "Ch. 1 · Understanding LLMs",
+              "slug": "understanding-llms",
+              "description": "What an LLM is, its applications, pretraining and fine-tuning, the Transformer architecture (BERT vs. GPT), zero-shot and few-shot, and the plan for building an LLM from scratch.",
+              "markdown": "large-language-model/theory/01-understanding-llms.md"
             },
             {
-              "name": "Cap. 2 · Dados de texto",
-              "slug": "dados-de-texto",
-              "description": "Do texto bruto à entrada do modelo: tokenização, vocabulário, tokens especiais, Byte Pair Encoding, janela deslizante, embeddings de token e embeddings posicionais.",
-              "markdown": "large-language-model/teoria/02-dados-de-texto.md"
+              "name": "Ch. 2 · Working with text data",
+              "slug": "working-with-text-data",
+              "description": "From raw text to model input: tokenization, vocabulary, special tokens, Byte Pair Encoding, sliding window, token embeddings, and positional embeddings.",
+              "markdown": "large-language-model/theory/02-working-with-text-data.md"
             },
             {
-              "name": "Cap. 3 · Mecanismos de atenção",
-              "slug": "mecanismos-de-atencao",
-              "description": "O problema das sequências longas, Query/Key/Value, attention scores, self-attention, context vector, máscara causal e multi-head attention, com um exemplo numérico.",
-              "markdown": "large-language-model/teoria/03-mecanismos-de-atencao.md"
+              "name": "Ch. 3 · Attention mechanisms",
+              "slug": "attention-mechanisms",
+              "description": "The long-sequence problem, Query/Key/Value, attention scores, self-attention, context vector, causal mask, and multi-head attention, with a worked numeric example.",
+              "markdown": "large-language-model/theory/03-attention-mechanisms.md"
             }
           ]
         },
         {
-          "name": "Prática",
-          "slug": "pratica",
-          "description": "A aula de 30/09 em notebooks: construindo o GPT-2 na prática. Cada notebook constrói uma peça usada no seguinte, do tokenizador ao assistente que segue instruções, e responde às perguntas do grupo rodando código.",
+          "name": "Practice",
+          "slug": "practice",
+          "description": "The September 30 class in notebooks: building GPT-2 in practice. Each notebook builds a piece used by the next, from the tokenizer to the assistant that follows instructions, and answers the group's questions by running code.",
           "children": [
             {
-              "name": "Setup da aula",
+              "name": "Class setup",
               "slug": "setup",
-              "description": "Mapa dos notebooks, quem apresenta cada um, como instalar o ambiente e preparar os checkpoints antes da aula.",
-              "markdown": "large-language-model/pratica/setup.md"
+              "description": "Map of the notebooks, who presents each one, how to install the environment, and how to prepare the checkpoints before class.",
+              "markdown": "large-language-model/practice/setup.md"
             },
             {
-              "name": "01 · Tokenização e embeddings",
-              "slug": "tokenizacao",
-              "description": "Tokenização por caractere, palavra e BPE; tokenizadores do GPT-4 e GPT-4o; BPE do zero; pares entrada/alvo com janela deslizante; embeddings de token e de posição.",
-              "markdown": "large-language-model/pratica/01-tokenizacao.md"
+              "name": "01 · Tokenization and embeddings",
+              "slug": "tokenization",
+              "description": "Character, word and BPE tokenization; the GPT-4 and GPT-4o tokenizers; BPE from scratch; input/target pairs with a sliding window; token and positional embeddings.",
+              "markdown": "large-language-model/practice/01-tokenization.md"
             },
             {
-              "name": "02 · Atenção",
-              "slug": "atencao",
-              "description": "Q, K, V e o score; outras formas de score (aditivo, cosseno); máscara causal; multi-head attention, número de heads e o caso não divisível; os heatmaps das 12 heads do GPT-2.",
-              "markdown": "large-language-model/pratica/02-atencao.md"
+              "name": "02 · Attention",
+              "slug": "attention",
+              "description": "Q, K, V and the score; other score functions (additive, cosine); causal mask; multi-head attention, number of heads and the non-divisible case; heatmaps of GPT-2's 12 heads.",
+              "markdown": "large-language-model/practice/02-attention.md"
             },
             {
-              "name": "03 · GPT e geração",
-              "slug": "gpt-e-geracao",
-              "description": "O GPTModel montado bloco a bloco, geração de texto sem pré-treino e ablações de arquitetura: sem LayerNorm, sem FFN, ReLU no lugar de GELU, 12 vs 24 camadas.",
-              "markdown": "large-language-model/pratica/03-gpt-e-geracao.md"
+              "name": "03 · GPT and generation",
+              "slug": "gpt-and-generation",
+              "description": "The GPTModel assembled block by block, text generation without pretraining, and architecture ablations: no LayerNorm, no FFN, ReLU instead of GELU, 12 vs. 24 layers.",
+              "markdown": "large-language-model/practice/03-gpt-and-generation.md"
             },
             {
-              "name": "04 · Pré-treino",
-              "slug": "pre-treino",
-              "description": "Função de perda, loop de treinamento, temperatura e top-k, ablações com treino, carregamento dos pesos oficiais do GPT-2 e alternativas ao Transformer.",
-              "markdown": "large-language-model/pratica/04-pre-treino.md"
+              "name": "04 · Pretraining",
+              "slug": "pretraining",
+              "description": "Loss function, training loop, temperature and top-k, ablations with training, loading the official GPT-2 weights, and alternatives to the Transformer.",
+              "markdown": "large-language-model/practice/04-pretraining.md"
             },
             {
-              "name": "05 · Classificador de spam",
-              "slug": "classificador",
-              "description": "Fine-tuning para classificação: troca da cabeça de saída por 2 classes, congelamento de camadas e um classificador de SMS spam com cerca de 96% de acurácia.",
-              "markdown": "large-language-model/pratica/05-classificador.md"
+              "name": "05 · Spam classifier",
+              "slug": "classifier",
+              "description": "Classification fine-tuning: replacing the output head with 2 classes, freezing layers, and an SMS spam classifier with about 96% accuracy.",
+              "markdown": "large-language-model/practice/05-classifier.md"
             },
             {
-              "name": "06 · Assistente",
-              "slug": "assistente",
-              "description": "Fine-tuning de instruções: formato de prompt, dataset de instruções, treino do GPT-2 que segue instruções, e onde encontrar ou como criar dados.",
-              "markdown": "large-language-model/pratica/06-assistente.md"
+              "name": "06 · Assistant",
+              "slug": "assistant",
+              "description": "Instruction fine-tuning: prompt format, instruction dataset, training a GPT-2 that follows instructions, and where to find or how to create data.",
+              "markdown": "large-language-model/practice/06-assistant.md"
             },
             {
-              "name": "07 · Parâmetros",
-              "slug": "parametros",
-              "description": "Por que esses valores? As quatro versões do GPT-2, de onde vem cada parâmetro, escalando por 3, viés e gradiente, small vs medium gerando texto e outras famílias de modelos.",
-              "markdown": "large-language-model/pratica/07-parametros.md"
+              "name": "07 · Parameters",
+              "slug": "parameters",
+              "description": "Why these values? The four GPT-2 sizes, where each parameter comes from, scaling by 3, bias and gradient, small vs. medium generating text, and other model families.",
+              "markdown": "large-language-model/practice/07-parameters.md"
             }
           ]
         },
         {
-          "name": "Equipe do grupo",
-          "slug": "equipe",
-          "description": "Os integrantes do grupo de Large Language Model, com seus perfis no LinkedIn e no Lattes.",
-          "markdown": "large-language-model/equipe/equipe.md"
+          "name": "Group team",
+          "slug": "team",
+          "description": "The members of the Large Language Model group, with their LinkedIn and Lattes profiles.",
+          "markdown": "large-language-model/team/team.md"
         }
       ]
     },
     {
       "name": "Small Language Model",
       "slug": "small-language-model",
-      "description": "Small Language Models. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
+      "description": "Small Language Models. Content to be published by the responsible group after their presentation."
     },
     {
-      "name": "LLM em Produção",
-      "slug": "llm-em-producao",
-      "description": "LLMs em produção. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
+      "name": "LLMs in Production",
+      "slug": "llms-in-production",
+      "description": "Running LLMs in production. Content to be published by the responsible group after their presentation."
     },
     {
       "name": "Agentic Coding",
       "slug": "agentic-coding",
-      "description": "Agentic Coding. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
+      "description": "Agentic Coding. Content to be published by the responsible group after their presentation."
     },
     {
       "name": "Generative Deep Learning",
       "slug": "generative-deep-learning",
-      "description": "Generative Deep Learning. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
+      "description": "Generative Deep Learning. Content to be published by the responsible group after their presentation."
     }
   ]
 }

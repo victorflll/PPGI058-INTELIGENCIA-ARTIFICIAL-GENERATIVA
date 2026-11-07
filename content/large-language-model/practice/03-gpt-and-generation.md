@@ -1,14 +1,14 @@
-# 03 · Montando o GPT e gerando texto — *Victor*
+# 03 · Building the GPT and generating text — *Victor*
 
-**Entra:** tokenizer + embeddings (01) e `MultiHeadAttention` (02). **Sai:** `GPTModel` + `generate` → treinados no notebook 04.
+**In:** tokenizer + embeddings (01) and `MultiHeadAttention` (02). **Out:** `GPTModel` + `generate` → trained in notebook 04.
 
-Perguntas:
-1. Consigo gerar texto com sentido **sem** pré-treino?
-2. O que acontece se eu remover alguma etapa do Transformer (normalização, FFN)?
-3. Posso usar ReLU na FFN?
-4. Qual a diferença entre 12 e 24 camadas?
+Questions:
+1. Can I generate meaningful text **without** pretraining?
+2. What happens if I remove a step from the Transformer (normalization, FFN)?
+3. Can I use ReLU in the FFN?
+4. What is the difference between 12 and 24 layers?
 
-> 📓 Página gerada a partir do notebook [`03_gpt_e_geracao.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/03_gpt_e_geracao.ipynb) (repositório *LLMs-from-scratch*, pasta `30-09`), com as saídas da última execução. Para rodar, veja o [setup da aula](setup.md).
+> 📓 Page generated from the notebook [`03_gpt_e_geracao.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/03_gpt_e_geracao.ipynb) (*LLMs-from-scratch* repository, `30-09` folder), with the outputs of its last run. To run it, see the [class setup](setup.md).
 
 ```python
 import time
@@ -32,8 +32,8 @@ tensor([[6109, 3626, 6100,  345],
         [6109, 1110, 6622,  257]])
 ```
 
-## 1. Um bloco Transformer, passo a passo
-`LayerNorm → atenção → + atalho → LayerNorm → FFN → + atalho`. Vamos chamar cada peça na mão e olhar o tensor.
+## 1. A Transformer block, step by step
+`LayerNorm → attention → + shortcut → LayerNorm → FFN → + shortcut`. Let's call each piece by hand and look at the tensor.
 
 ```python
 tok_emb = torch.nn.Embedding(cfg["vocab_size"], cfg["emb_dim"])
@@ -69,7 +69,7 @@ embeddings                   shape=(2, 4, 768)  média=+0.009  desvio=1.420
 8. + atalho (residual)       shape=(2, 4, 768)  média=+0.009  desvio=1.456
 ```
 
-Entra `batch × tokens × 768`, sai **o mesmo formato** → dá para empilhar quantos blocos quisermos.
+`batch × tokens × 768` goes in, **the same shape** comes out → we can stack as many blocks as we want.
 
 ### GELU vs ReLU
 
@@ -82,9 +82,9 @@ plt.legend(); plt.grid(alpha=.3); plt.title("GELU é suave e deixa passar um pou
 plt.show()
 ```
 
-![Saída 1 do notebook 03_gpt_e_geracao](figuras/03-gpt-e-geracao-1.png)
+![Output 1 of notebook 03_gpt_e_geracao](figures/03-gpt-and-generation-1.png)
 
-## 2. O GPT inteiro: embeddings + 12 blocos + LayerNorm final + cabeça de saída
+## 2. The whole GPT: embeddings + 12 blocks + final LayerNorm + output head
 
 ```python
 torch.manual_seed(123)
@@ -132,7 +132,7 @@ print("logits:", tuple(logits.shape), "→ para cada posição, uma nota para ca
 logits: (2, 4, 50257) → para cada posição, uma nota para cada um dos 50.257 tokens
 ```
 
-## 3. Gerar texto = prever o próximo token em loop
+## 3. Generating text = predicting the next token in a loop
 
 ```python
 def proximo_token(model, ids, k=5):
@@ -161,12 +161,12 @@ top-5 para o próximo token (modelo aleatório):
 texto gerado: Hello, I am Featureiman Byeswickattribute argue logger Normandy Compton analogous bore ITVEGIN ministriesysics
 ```
 
-**Resposta à pergunta 1:** não. Com pesos aleatórios todas as probabilidades ficam ≈ 1/50257 ≈ 0,00002 e o texto é lixo.
-A arquitetura é só o "encanamento"; o conhecimento vem do **pré-treino** (notebook 04).
+**Answer to question 1:** no. With random weights all probabilities stay ≈ 1/50257 ≈ 0.00002 and the text is garbage.
+The architecture is just the "plumbing"; the knowledge comes from **pretraining** (notebook 04).
 
-## 4. 🔧 Removendo e trocando peças
-`variante()` (em `aula.py`) pega o `GPTModel` do livro e troca LayerNorm por identidade, FFN por zero, ou GELU por ReLU.
-Ainda sem treinar: olhamos parâmetros e o que acontece com os valores depois de 12 blocos.
+## 4. 🔧 Removing and swapping pieces
+`variante()` (in `aula.py`) takes the book's `GPTModel` and replaces LayerNorm with identity, the FFN with zero, or GELU with ReLU.
+Still untrained: we look at the parameters and at what happens to the values after 12 blocks.
 
 ```python
 def forward_stats(m):
@@ -195,13 +195,13 @@ sem FFN         params= 106,340,352  desvio do sinal após 12 blocos=   1.68
 FFN com ReLU    params= 163,009,536  desvio do sinal após 12 blocos=   1.88
 ```
 
-- **Sem FFN:** perde ~⅔ dos parâmetros dos blocos — a FFN é onde fica a maior parte da "memória" do modelo.
-- **Sem LayerNorm:** o sinal cresce bloco a bloco (os atalhos vão somando); em treino isso desestabiliza os gradientes.
-- **ReLU:** mesmos parâmetros, só muda a não-linearidade.
+- **Without FFN:** loses ~⅔ of the blocks' parameters — the FFN is where most of the model's "memory" lives.
+- **Without LayerNorm:** the signal grows block after block (the shortcuts keep adding up); during training this destabilizes the gradients.
+- **ReLU:** same parameters, only the non-linearity changes.
 
-O efeito **no aprendizado** a gente mede treinando essas variantes no notebook 04.
+We measure the effect **on learning** by training these variants in notebook 04.
 
-## 5. 🔧 12 vs 24 camadas
+## 5. 🔧 12 vs 24 layers
 
 ```python
 for n_camadas in [6, 12, 24, 48]:
@@ -220,9 +220,9 @@ for n_camadas in [6, 12, 24, 48]:
 48 camadas:  418.1M params | forward de 256 tokens:    630 ms
 ```
 
-Cada bloco custa ~7M parâmetros (12·d²). Dobrar camadas ≈ dobra custo e memória dos blocos;
-mais profundidade = mais etapas de "raciocínio" sobre a representação, **se** houver dados para treinar.
-(GPT-2 medium tem 24 camadas, mas também aumenta `emb_dim` para 1024 — ver notebook 07.)
+Each block costs ~7M parameters (12·d²). Doubling the layers ≈ doubles the blocks' cost and memory;
+more depth = more "reasoning" steps over the representation, **if** there is data to train on.
+(GPT-2 medium has 24 layers, but it also increases `emb_dim` to 1024 — see notebook 07.)
 
-### ✅ Construto
-`GPTModel(cfg)` + `generate_text_simple` → no notebook **04** vamos treinar esse modelo.
+### ✅ Construct
+`GPTModel(cfg)` + `generate_text_simple` → in notebook **04** we will train this model.
