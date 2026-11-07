@@ -1,5 +1,5 @@
 /* =========================================================================
-   Intelligent Agents · static course site
+   IA Generativa · static course site
    Zero-build: fetches structure.json + markdown, renders in-browser.
    ========================================================================= */
 (() => {
@@ -77,7 +77,7 @@
     const disc = el("span", {
       class: "tree__disc" + (hasChildren ? " is-branch" : ""),
       html: hasChildren ? ICON.chevron : "",
-      "aria-label": hasChildren ? "Expand" : null,
+      "aria-label": hasChildren ? "Expandir" : null,
     });
     if (hasChildren) {
       disc.addEventListener("click", (e) => {
@@ -154,8 +154,8 @@
     const chain = [];
     let cur = node;
     while (cur) { chain.unshift(cur); cur = cur.parent; }
-    const frag = el("nav", { class: "crumbs", "aria-label": "Breadcrumb" });
-    frag.appendChild(el("a", { href: "#/", text: "Start" }));
+    const frag = el("nav", { class: "crumbs", "aria-label": "Trilha de navegação" });
+    frag.appendChild(el("a", { href: "#/", text: "Início" }));
     chain.forEach((c, i) => {
       frag.appendChild(el("span", { class: "sep", text: "›" }));
       if (i === chain.length - 1) frag.appendChild(el("span", { class: "here", text: c.name }));
@@ -171,12 +171,12 @@
     const page = el("div", { class: "page" });
     page.appendChild(el("div", { class: "phead" }, [
       el("span", { class: "phead__kicker", text: state.course.subtitle || "PPGI · UFAL" }),
-      el("h1", { class: "phead__title", text: state.course.title || "Intelligent Agents" }),
+      el("h1", { class: "phead__title", text: state.course.title || "IA Generativa" }),
       el("p", { class: "phead__lead", text: state.course.tagline || "" }),
       el("div", { class: "phead__rule" }),
     ]));
 
-    page.appendChild(el("div", { class: "cards__intro", text: "Timeline" }));
+    page.appendChild(el("div", { class: "cards__intro", text: "Assuntos" }));
     const cards = el("div", { class: "cards" });
     state.sections.forEach((n, i) => cards.appendChild(sectionCard(n, i)));
     page.appendChild(cards);
@@ -192,12 +192,12 @@
 
     const kids = node.children || [];
     if (kids.length) {
-      page.appendChild(el("div", { class: "cards__intro", text: `${kids.length} ${kids.length === 1 ? "topic" : "topics"}` }));
+      page.appendChild(el("div", { class: "cards__intro", text: `${kids.length} ${kids.length === 1 ? "tópico" : "tópicos"}` }));
       const cards = el("div", { class: "cards" });
       kids.forEach((c, i) => cards.appendChild(sectionCard(c, i)));
       page.appendChild(cards);
     } else {
-      page.appendChild(el("div", { class: "empty", text: "Content coming soon." }));
+      page.appendChild(el("div", { class: "empty", text: "Conteúdo em breve." }));
     }
     page.appendChild(pageNav(node));
     document.title = `${node.name} · ${state.course.title}`;
@@ -244,9 +244,9 @@
     } catch (err) {
       article.innerHTML = "";
       article.appendChild(el("div", { class: "errbox" }, [
-        el("p", { html: "<strong>This content could not be loaded.</strong>" }),
-        el("p", { html: `Details: <code>${String(err.message || err)}</code>` }),
-        el("p", { class: "acc__desc", text: "When running locally, serve the folder with a static server (e.g. python -m http.server), since the browser blocks fetch over file://." }),
+        el("p", { html: "<strong>Não foi possível carregar este conteúdo.</strong>" }),
+        el("p", { html: `Detalhes: <code>${String(err.message || err)}</code>` }),
+        el("p", { class: "acc__desc", text: "Ao rodar localmente, sirva a pasta com um servidor estático (ex.: python3 -m http.server), pois o navegador bloqueia fetch via file://." }),
       ]));
     }
   }
@@ -294,7 +294,7 @@
       const id = slugify(h.textContent);
       if (!id) return;
       h.id = id;
-      const link = el("button", { class: "headlink", "aria-label": "Link to this section", text: "#" });
+      const link = el("button", { class: "headlink", "aria-label": "Link para esta seção", text: "#" });
       link.addEventListener("click", () => h.scrollIntoView({ behavior: "smooth", block: "start" }));
       h.appendChild(link);
     });
@@ -377,14 +377,14 @@
       el("span", { class: "pdf__icon", html: ICON.pdf }),
       el("span", { class: "pdf__meta" }, [
         el("span", { class: "pdf__name", text: title }),
-        el("span", { class: "pdf__hint", text: "PDF · click to view" }),
+        el("span", { class: "pdf__hint", text: "PDF · clique para ver" }),
       ]),
       el("span", { class: "pdf__chev", html: ICON.chevDown }),
     ]);
     const frameHolder = el("div", { class: "pdf__frame" });
     const actions = el("div", { class: "pdf__actions" }, [
       el("a", { class: "pdf__open", href: url, target: "_blank", rel: "noopener noreferrer" },
-        [document.createTextNode("Open in new tab"), el("span", { html: ICON.external })]),
+        [document.createTextNode("Abrir em nova aba"), el("span", { html: ICON.external })]),
     ]);
     const body = el("div", { class: "pdf__body" }, [el("div", { class: "pdf__inner" }, [frameHolder, actions])]);
     let loaded = false;
@@ -410,10 +410,10 @@
     if (!prev && !next) return el("div");
     const nav = el("div", { class: "pagenav" });
     if (prev) nav.appendChild(el("a", { class: "prev", href: "#/" + prev.pathStr }, [
-      el("span", { class: "pn-dir", text: "← Previous" }), el("span", { class: "pn-name", text: prev.name }),
+      el("span", { class: "pn-dir", text: "← Anterior" }), el("span", { class: "pn-name", text: prev.name }),
     ]));
     if (next) nav.appendChild(el("a", { class: "next", href: "#/" + next.pathStr }, [
-      el("span", { class: "pn-dir", text: "Next →" }), el("span", { class: "pn-name", text: next.name }),
+      el("span", { class: "pn-dir", text: "Próximo →" }), el("span", { class: "pn-name", text: next.name }),
     ]));
     return nav;
   }
@@ -428,10 +428,10 @@
     const page = el("div", { class: "page" }, [
       el("div", { class: "phead" }, [
         el("span", { class: "phead__kicker", text: "404" }),
-        el("h1", { class: "phead__title", text: "Page not found" }),
-        el("p", { class: "phead__lead", html: `No section matches <code>${path}</code>.` }),
+        el("h1", { class: "phead__title", text: "Página não encontrada" }),
+        el("p", { class: "phead__lead", html: `Nenhuma seção corresponde a <code>${path}</code>.` }),
       ]),
-      el("a", { class: "acc__open", href: "#/" }, [document.createTextNode("Back to start"), el("span", { html: ICON.arrow })]),
+      el("a", { class: "acc__open", href: "#/" }, [document.createTextNode("Voltar ao início"), el("span", { html: ICON.arrow })]),
     ]);
     swap(page);
   }
@@ -495,9 +495,9 @@
     } catch (err) {
       $("#view").innerHTML = "";
       $("#view").appendChild(el("div", { class: "errbox" }, [
-        el("p", { html: "<strong>Failed to load the course structure.</strong>" }),
+        el("p", { html: "<strong>Falha ao carregar a estrutura do curso.</strong>" }),
         el("p", { html: `<code>${String(err.message || err)}</code>` }),
-        el("p", { class: "acc__desc", text: "Serve the githubpages/ folder with a static server and reload." }),
+        el("p", { class: "acc__desc", text: "Sirva a pasta do site com um servidor estático e recarregue." }),
       ]));
       document.body.dataset.loading = "false";
       return;

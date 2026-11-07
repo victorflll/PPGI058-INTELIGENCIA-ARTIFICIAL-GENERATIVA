@@ -1,6 +1,12 @@
 # CLAUDE.md: notes for AI agents
 
-Static, **zero-build** course site for *Intelligent Agents* (PPGI · IC / UFAL).
+Static, **zero-build** class wiki for *IA Generativa* (PPGI058 · IC / UFAL).
+Each top-level section is one **group's topic** (Large Language Model, Small Language Model,
+LLM em Produção, Agentic Coding, Generative Deep Learning); groups fill in their own section
+after presenting. Only `large-language-model` has content so far; the others are empty
+section nodes (no `children`, no `markdown`), which render "Conteúdo em breve."
+Each group's files live under `content/<group-slug>/`.
+Content is written in **Portuguese (pt-BR)**, and so are the UI strings in `app.js`.
 The browser fetches `content/structure.json`, walks the tree, and renders Markdown
 client-side. There is **no framework, no bundler, no build step, no server code**.
 Keep it that way so it can deploy to GitHub Pages as plain files.
@@ -34,13 +40,13 @@ A `Node` is:
   "name": "Display Name",          // shown in sidebar, cards, breadcrumbs, <title>
   "slug": "kebab-case",            // path segment; unique among siblings
   "description": "one paragraph",  // optional; shown on section pages + cards
-  "markdown": "future/articles.md",// optional; path under content/
+  "markdown": "large-language-model/teoria/visao-geral.md",// optional; path under content/
   "children": [ Node, ... ]        // optional
 }
 ```
 
 The route for a node is the `/`-joined chain of slugs from the root: e.g.
-`#/future/articles`. The full slug path (not the slug alone) is the unique key.
+`#/large-language-model/teoria/visao-geral`. The full slug path (not the slug alone) is the unique key.
 
 ### Branch vs leaf: the one rule that bites
 
@@ -52,9 +58,9 @@ Routing (`route()` in `app.js`):
 
 **`markdown` wins over `children`.** A node with *both* renders as a leaf page; its
 children are then reachable only through the sidebar tree (expandable), not as cards.
-This is intentional and used by `present/experiments/skills`. If you want a section
+This is intentional (no node uses it right now). If you want a section
 *landing* page that lists its children as cards, give the node `children` and **no
-`markdown`** (this is how `Present` and `Future` work).
+`markdown`** (this is how the group sections, `Teoria` and `Prática` work).
 
 Node order in `structure.json` is meaningful: a DFS pre-order of the tree is the
 "book order" that drives the **Prev / Next** footer links.
@@ -96,7 +102,7 @@ Rendered with `marked` (GFM, `breaks:false`), then post-processed:
   applies to folders, md files, **and** assets (images, PDFs). Slugify on import
   (e.g. `Apresentação Final.pdf` → `apresentacao-final.pdf`) and update the links.
 - **Co-locate assets** with the Markdown that references them, via relative paths
-  (`pdfs/…`, `figuras/…`). A shared `pdfs/` folder per section is fine (see `future/`).
+  (`pdfs/…`, `figuras/…`). A shared `pdfs/` / `figuras/` folder per section is fine (see `large-language-model/teoria/`).
 - **Reuse CSS tokens** from `:root`; match the existing glass/dark aesthetic.
 - **Don't add a build step or dependencies.** New libs, if ever truly needed, go in
   `index.html` as a pinned CDN `<script>`, never npm/bundler.
@@ -108,9 +114,19 @@ Rendered with `marked` (GFM, `breaks:false`), then post-processed:
   check that code blocks, inline code, and headings render as intended — repair the
   fences in the source if not.
 
+## Practice pages are generated from notebooks
+
+`content/large-language-model/pratica/0N-*.md` and its `figuras/` are converted from the Jupyter
+notebooks in [victorflll/LLMs-from-scratch/30-09](https://github.com/victorflll/LLMs-from-scratch/tree/main/30-09):
+markdown cells copied as-is, code cells as ```` ```python ```` fences, text outputs as
+```` ```text ```` fences (long ones clipped), image outputs saved as PNGs, and
+`NN_name.ipynb` links rewritten to the registered `.md` pages. If a notebook changes,
+regenerate the page the same way rather than hand-editing the output blocks.
+`setup.md` is hand-written from the folder's README.
+
 ## Add a page: checklist
 
-1. Write `content/<section>/<name>.md`; drop its assets nearby with kebab-case names.
+1. Write `content/<group-slug>/<name>.md`; drop its assets nearby with kebab-case names.
 2. Use relative links for assets; human-readable link text for PDFs.
 3. Add a `Node` to `structure.json` (`name`, `slug`, `description`, and `markdown`
    **or** `children`) in the position you want it to appear / read.
@@ -121,7 +137,7 @@ Rendered with `marked` (GFM, `breaks:false`), then post-processed:
 `fetch` is blocked over `file://`, so always serve over HTTP:
 
 ```bash
-cd githubpages && python3 -m http.server 8000
+python3 -m http.server 8000
 ```
 
 Then load the route in a browser and check: the page renders, PDF cards expand and

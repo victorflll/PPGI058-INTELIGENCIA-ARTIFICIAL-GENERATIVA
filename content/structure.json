@@ -1,370 +1,128 @@
 {
   "course": {
-    "title": "Intelligent Agents",
-    "subtitle": "PPGI · IC / UFAL · 2026.1",
-    "tagline": "From the past to the future of AI agents"
+    "title": "IA Generativa",
+    "subtitle": "Wiki · PPGI058 · UFAL · 2026.2",
+    "tagline": "A wiki da disciplina de Inteligência Artificial Generativa. Cada grupo tem sua seção e a alimenta depois da apresentação."
   },
   "sections": [
     {
-      "name": "Past",
-      "slug": "past",
-      "description": "The roots of intelligent agents, a timeline from 1950 to 2000 in three eras: the birth of symbolic AI (1950–1970), cognitive architectures and the symbolic-vs-reactive clash (1980–1990), and multi-agent systems, communication languages, and standards (1990–2000).",
+      "name": "Large Language Model",
+      "slug": "large-language-model",
+      "description": "Construindo um LLM do zero, de Sebastian Raschka (Build a Large Language Model (From Scratch)): a teoria dos capítulos 1 a 3 e a aula prática em notebooks, do tokenizador ao GPT-2 que segue instruções.",
       "children": [
         {
-          "name": "Timeline",
-          "slug": "timeline",
-          "description": "The section's map: half a century of intelligent agents (1950–2000) told in three eras, and the through-line that connects them.",
-          "markdown": "past/timeline.md"
-        },
-        {
-          "name": "1950–1970",
-          "slug": "1950-1970",
-          "description": "The birth of AI: from the mathematical neuron and the Turing Test to symbolic AI, microworlds and planning robots, expert systems, and the convergence of control theory and classical AI.",
+          "name": "Teoria",
+          "slug": "teoria",
+          "description": "Os conceitos por trás dos LLMs, seguindo os capítulos 1 a 3 de Build a Large Language Model (From Scratch), de Sebastian Raschka: o que é um LLM e a arquitetura Transformer, como o texto vira entrada numérica e como funciona o mecanismo de atenção.",
           "children": [
             {
-              "name": "Foundations",
-              "slug": "foundations",
-              "description": "Overview and timeline of 1950–1970, and the period's central question: how to mechanize goal-directed behavior.",
-              "markdown": "past/1950-1970/foundations.md"
+              "name": "Visão geral",
+              "slug": "visao-geral",
+              "description": "O roteiro da disciplina, os três estágios de construção de um LLM e os slides da apresentação.",
+              "markdown": "large-language-model/teoria/visao-geral.md"
             },
             {
-              "name": "The Birth of AI",
-              "slug": "birth-of-ai",
-              "description": "The McCulloch & Pitts neuron, the Turing Test, and the Dartmouth Conference that named the field and gave rise to symbolic AI.",
-              "markdown": "past/1950-1970/birth-of-ai.md"
+              "name": "Cap. 1 · Compreendendo LLMs",
+              "slug": "compreendendo-llms",
+              "description": "O que é um LLM, suas aplicações, pré-treinamento e fine-tuning, a arquitetura Transformer (BERT × GPT), zero-shot e few-shot, e o plano para construir um LLM do zero.",
+              "markdown": "large-language-model/teoria/01-compreendendo-llms.md"
             },
             {
-              "name": "Symbolic Era & GPS",
-              "slug": "symbolic-era",
-              "description": "The Symbolic Era: the Logic Theorist and the General Problem Solver, the dream of a universal problem solver, and the limit of combinatorial explosion.",
-              "markdown": "past/1950-1970/symbolic-era.md"
+              "name": "Cap. 2 · Dados de texto",
+              "slug": "dados-de-texto",
+              "description": "Do texto bruto à entrada do modelo: tokenização, vocabulário, tokens especiais, Byte Pair Encoding, janela deslizante, embeddings de token e embeddings posicionais.",
+              "markdown": "large-language-model/teoria/02-dados-de-texto.md"
             },
             {
-              "name": "Microworlds & Planning Robots",
-              "slug": "microworlds",
-              "description": "Microworlds and the first planning robots: SHRDLU in the Blocks World, the robot Shakey, and the STRIPS planning algorithm.",
-              "markdown": "past/1950-1970/microworlds.md"
-            },
-            {
-              "name": "Expert Systems",
-              "slug": "expert-systems",
-              "description": "The epistemological turn and expert systems: production architecture, DENDRAL, MYCIN and XCON, and the limitations that led to machine learning.",
-              "markdown": "past/1950-1970/expert-systems.md"
-            },
-            {
-              "name": "Control Theory & Classical AI",
-              "slug": "control-theory",
-              "description": "Cybernetics, feedback, and control theory versus classical AI, and the perception → planning → action convergence that prefigured the modern agent.",
-              "markdown": "past/1950-1970/control-theory.md"
-            },
-            {
-              "name": "References",
-              "slug": "references",
-              "description": "The bibliography cited in the 1950–1970 presentation, from the founding papers of 1943–1959 to the classic surveys.",
-              "markdown": "past/1950-1970/references.md"
+              "name": "Cap. 3 · Mecanismos de atenção",
+              "slug": "mecanismos-de-atencao",
+              "description": "O problema das sequências longas, Query/Key/Value, attention scores, self-attention, context vector, máscara causal e multi-head attention, com um exemplo numérico.",
+              "markdown": "large-language-model/teoria/03-mecanismos-de-atencao.md"
             }
           ]
         },
         {
-          "name": "1980–1990",
-          "slug": "1980-1990",
-          "description": "The architecture of the artificial mind: the agent as an abstraction, the ACT-R and SOAR cognitive architectures, the BDI/PRS model (all the way to NASA's Space Shuttle), and Brooks's reactive critique that led into the AI Winter.",
+          "name": "Prática",
+          "slug": "pratica",
+          "description": "A aula de 30/09 em notebooks: construindo o GPT-2 na prática. Cada notebook constrói uma peça usada no seguinte, do tokenizador ao assistente que segue instruções, e responde às perguntas do grupo rodando código.",
           "children": [
             {
-              "name": "Foundations",
-              "slug": "foundations",
-              "description": "Overview of 1980–1990: the institutionalization of AI, the agent abstraction, and the tension between top-down (symbolic) and bottom-up (reactive) approaches.",
-              "markdown": "past/1980-1990/foundations.md"
+              "name": "Setup da aula",
+              "slug": "setup",
+              "description": "Mapa dos notebooks, quem apresenta cada um, como instalar o ambiente e preparar os checkpoints antes da aula.",
+              "markdown": "large-language-model/pratica/setup.md"
             },
             {
-              "name": "Architecture of the Artificial Mind",
-              "slug": "artificial-mind-architecture",
-              "description": "Defining intelligence as an agent, the institutionalization of AI, the era's two currents, and the ACT-R cognitive architecture validated with fMRI.",
-              "markdown": "past/1980-1990/artificial-mind-architecture.md"
+              "name": "01 · Tokenização e embeddings",
+              "slug": "tokenizacao",
+              "description": "Tokenização por caractere, palavra e BPE; tokenizadores do GPT-4 e GPT-4o; BPE do zero; pares entrada/alvo com janela deslizante; embeddings de token e de posição.",
+              "markdown": "large-language-model/pratica/01-tokenizacao.md"
             },
             {
-              "name": "SOAR",
-              "slug": "soar",
-              "description": "The SOAR cognitive architecture (Newell, Laird & Rosenbloom, 1983): reasoning as search in a problem space, and chunking as automatic learning.",
-              "markdown": "past/1980-1990/soar.md"
+              "name": "02 · Atenção",
+              "slug": "atencao",
+              "description": "Q, K, V e o score; outras formas de score (aditivo, cosseno); máscara causal; multi-head attention, número de heads e o caso não divisível; os heatmaps das 12 heads do GPT-2.",
+              "markdown": "large-language-model/pratica/02-atencao.md"
             },
             {
-              "name": "BDI",
-              "slug": "bdi",
-              "description": "Bratman's Belief–Desire–Intention model (1987), the PRS framework, and its most famous application: the fault-detection system of NASA's Space Shuttle.",
-              "markdown": "past/1980-1990/bdi.md"
+              "name": "03 · GPT e geração",
+              "slug": "gpt-e-geracao",
+              "description": "O GPTModel montado bloco a bloco, geração de texto sem pré-treino e ablações de arquitetura: sem LayerNorm, sem FFN, ReLU no lugar de GELU, 12 vs 24 camadas.",
+              "markdown": "large-language-model/pratica/03-gpt-e-geracao.md"
             },
             {
-              "name": "Production Systems & Reactive Critique",
-              "slug": "production-systems-reactive-critique",
-              "description": "The commercial peak of symbolic AI (OPS-5, R1/XCON) and Rodney Brooks's rupture: intelligence without representation, the subsumption architecture, and the AI Winter.",
-              "markdown": "past/1980-1990/production-systems-reactive-critique.md"
+              "name": "04 · Pré-treino",
+              "slug": "pre-treino",
+              "description": "Função de perda, loop de treinamento, temperatura e top-k, ablações com treino, carregamento dos pesos oficiais do GPT-2 e alternativas ao Transformer.",
+              "markdown": "large-language-model/pratica/04-pre-treino.md"
             },
             {
-              "name": "References",
-              "slug": "references",
-              "description": "The bibliography cited in the 1980–1990 presentation: SOAR, ACT-R, BDI/PRS, and general references.",
-              "markdown": "past/1980-1990/references.md"
+              "name": "05 · Classificador de spam",
+              "slug": "classificador",
+              "description": "Fine-tuning para classificação: troca da cabeça de saída por 2 classes, congelamento de camadas e um classificador de SMS spam com cerca de 96% de acurácia.",
+              "markdown": "large-language-model/pratica/05-classificador.md"
+            },
+            {
+              "name": "06 · Assistente",
+              "slug": "assistente",
+              "description": "Fine-tuning de instruções: formato de prompt, dataset de instruções, treino do GPT-2 que segue instruções, e onde encontrar ou como criar dados.",
+              "markdown": "large-language-model/pratica/06-assistente.md"
+            },
+            {
+              "name": "07 · Parâmetros",
+              "slug": "parametros",
+              "description": "Por que esses valores? As quatro versões do GPT-2, de onde vem cada parâmetro, escalando por 3, viés e gradiente, small vs medium gerando texto e outras famílias de modelos.",
+              "markdown": "large-language-model/pratica/07-parametros.md"
             }
           ]
         },
         {
-          "name": "1990–2000",
-          "slug": "1990-2000",
-          "description": "The social decade of agents: the Contract Net Protocol for negotiation, Agent-Oriented Programming, the speech-act-based communication languages (KQML, FIPA-ACL), and the JADE platform that made it all executable.",
-          "children": [
-            {
-              "name": "Foundations",
-              "slug": "foundations",
-              "description": "Overview of 1990–2000: the shift from cognition to communication, multi-agent systems, and the thread linking negotiation, communication languages, standards, and platforms.",
-              "markdown": "past/1990-2000/foundations.md"
-            },
-            {
-              "name": "Contract Net Protocol",
-              "slug": "contract-net-protocol",
-              "description": "Reid Smith's protocol for dynamically distributing tasks among agents: the announce → bid → award → execute cycle, inspired by the business contract market.",
-              "markdown": "past/1990-2000/contract-net-protocol.md"
-            },
-            {
-              "name": "Agent-Oriented Programming",
-              "slug": "agent-oriented-programming",
-              "description": "Yoav Shoham's AOP (1989): a restriction of OOP in which the agent has a mental state (beliefs, capabilities, commitments) and communicates through speech acts, implemented in the AGENT-0 language.",
-              "markdown": "past/1990-2000/agent-oriented-programming.md"
-            },
-            {
-              "name": "Agent Communication & KQML",
-              "slug": "agent-communication-kqml",
-              "description": "The problem of the 1990s, Genesereth's vision, the philosophical base of speech acts (Austin/Searle), and KQML, the first widely used agent communication language.",
-              "markdown": "past/1990-2000/agent-communication-kqml.md"
-            },
-            {
-              "name": "FIPA-ACL",
-              "slug": "fipa-acl",
-              "description": "The FIPA-ACL standard: formal modal-logic semantics (feasibility preconditions + rational effect), the communicative acts, and the comparison with KQML.",
-              "markdown": "past/1990-2000/fipa-acl.md"
-            },
-            {
-              "name": "JADE",
-              "slug": "jade",
-              "description": "The Java Agent Development Framework: open-source, FIPA-compliant middleware with a distributed architecture, white/yellow pages, life cycle, behaviours, and the Contract Net ready to use.",
-              "markdown": "past/1990-2000/jade.md"
-            },
-            {
-              "name": "References",
-              "slug": "references",
-              "description": "The bibliography cited in the 1990–2000 presentation: Contract Net, speech acts, KQML, FIPA-ACL, JADE, and references from the earlier eras.",
-              "markdown": "past/1990-2000/references.md"
-            }
-          ]
+          "name": "Equipe do grupo",
+          "slug": "equipe",
+          "description": "Os integrantes do grupo de Large Language Model, com seus perfis no LinkedIn e no Lattes.",
+          "markdown": "large-language-model/equipe/equipe.md"
         }
       ]
     },
     {
-      "name": "Present",
-      "slug": "present",
-      "description": "The state of the art of AI agents: usage guidelines, engineering best practices, hands-on experiments, and the current tooling around Claude Code and equivalent platforms.",
-      "children": [
-        {
-          "name": "Guidelines",
-          "slug": "guidelines",
-          "description": "Guidelines for understanding, designing, and operating intelligent agents responsibly, from architecture to the context window.",
-          "children": [
-            {
-              "name": "Synthesis",
-              "slug": "synthesis",
-              "description": "A synthesis of the guidelines for intelligent agents: architecture, memory, tools, and stopping criteria.",
-              "markdown": "present/guidelines/synthesis.md"
-            },
-            {
-              "name": "Multi-Platform",
-              "slug": "multi-platform",
-              "description": "How skills, rules, prompts, and agents map across Claude, Copilot, Gemini, and Cursor, with a decision diagram.",
-              "markdown": "present/guidelines/multi-platform.md"
-            }
-          ]
-        },
-        {
-          "name": "Best Practices",
-          "slug": "best-practices",
-          "description": "Consolidated patterns for working with agents: spec-driven development, subagents, and team formation.",
-          "children": [
-            {
-              "name": "Spec-Driven Development",
-              "slug": "spec-driven-development",
-              "description": "Spec-driven development with agents: from the contract (spec) to the plan, the tasks, and a verifiable implementation.",
-              "markdown": "present/best-practices/spec-driven-development.md"
-            },
-            {
-              "name": "Subagents",
-              "slug": "subagents",
-              "description": "When and how to delegate to subagents: context isolation, parallelism, and adversarial verification.",
-              "markdown": "present/best-practices/subagents.md"
-            },
-            {
-              "name": "Courses",
-              "slug": "courses",
-              "description": "Courses and reference materials on workflows with coding agents.",
-              "markdown": "present/best-practices/courses.md"
-            }
-          ]
-        },
-        {
-          "name": "Experiments",
-          "slug": "experiments",
-          "description": "Hands-on experiments conducted in the course, exploring the limits and capabilities of agents.",
-          "children": [
-            {
-              "name": "Subagents",
-              "slug": "subagents",
-              "description": "Experiments with subagents: orchestration, fan-out, and measuring results.",
-              "markdown": "present/experiments/subagents.md"
-            },
-            {
-              "name": "Skills",
-              "slug": "skills",
-              "description": "Experiments with skills: conventional commits, a protective hook, and automation with Playwright.",
-              "markdown": "present/experiments/skills.md",
-              "children": [
-                {
-                  "name": "Conventional Commit Skill",
-                  "slug": "conventional-commit-skill",
-                  "description": "The conventional-commit skill used in Experiment 1.",
-                  "markdown": "present/experiments/skills/conventional-commit-skill.md"
-                },
-                {
-                  "name": "Git Commit Skill",
-                  "slug": "git-commit-skill",
-                  "description": "The ambiguous commit skill used in Experiment 1.",
-                  "markdown": "present/experiments/skills/git-commit-skill.md"
-                },
-                {
-                  "name": "Hook",
-                  "slug": "hook",
-                  "description": "The protective hook triggered in Experiment 1.",
-                  "markdown": "present/experiments/skills/hook.md"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "name": "Articles · Skills",
-          "slug": "articles-skills",
-          "description": "A collection of articles about skills: what they are, how they work, and why they matter.",
-          "markdown": "present/articles-skills.md"
-        },
-        {
-          "name": "Claude Code & Tools",
-          "slug": "claude-code",
-          "description": "Claude Code, Claude Cowork, and Claude Design commands, the tooling for day-to-day work.",
-          "markdown": "present/claude-code.md"
-        },
-        {
-          "name": "Costs",
-          "slug": "costs",
-          "description": "Costs, tokens, and efficiency comparisons across models and platforms.",
-          "markdown": "present/costs.md"
-        }
-      ]
+      "name": "Small Language Model",
+      "slug": "small-language-model",
+      "description": "Small Language Models. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
     },
     {
-      "name": "Future",
-      "slug": "future",
-      "description": "Where agents are heading: from language-based software assistants to multimodal systems that perceive, model, and plan in the physical world. World models in the JEPA lineage (V-JEPA 2 → LeWorldModel → HWM), latent-space planning, and the transition from Generative AI to Physical AI.",
-      "children": [
-        {
-          "name": "Foundations",
-          "slug": "foundations",
-          "description": "The conceptual bridge from present to future: from language-based software agents to multimodal agents that perceive, model, predict, and plan in the world.",
-          "markdown": "future/foundations.md"
-        },
-        {
-          "name": "Articles · World Models",
-          "slug": "articles",
-          "description": "A per-article summary of the LeCun/JEPA lineage, from the 2022 manifesto paper to the 2026 world models and distributed agentic AI at the edge.",
-          "markdown": "future/articles.md"
-        },
-        {
-          "name": "Best Practices",
-          "slug": "best-practices",
-          "description": "The overview from both presentations: the three eras of AI, autonomy levels, world-model architecture, hierarchical planning, risks, and governance.",
-          "markdown": "future/best-practices.md"
-        },
-        {
-          "name": "Experiments",
-          "slug": "experiments",
-          "description": "A digest of the benchmarks reported in the papers (HWM, Temporal Straightening, LeWorldModel, V-JEPA 2.1) with metric tables and the cross-cutting analysis.",
-          "markdown": "future/experiments.md"
-        },
-        {
-          "name": "Hands-On",
-          "slug": "hands-on",
-          "description": "Practical access to world models: which models to run, how to test them, video demos, industrial deployments, and step-by-step guides per model.",
-          "markdown": "future/hands-on.md",
-          "children": [
-            {
-              "name": "V-JEPA 2",
-              "slug": "vjepa2",
-              "description": "Video encoder + zero-shot robot planning. Colab, HuggingFace, PyTorch Hub.",
-              "markdown": "future/hands-on/vjepa2.md"
-            },
-            {
-              "name": "I-JEPA",
-              "slug": "ijepa",
-              "description": "The simplest entry point for understanding JEPA: 5 lines on HuggingFace, runs on CPU.",
-              "markdown": "future/hands-on/ijepa.md"
-            },
-            {
-              "name": "LeWorldModel",
-              "slug": "leworldmodel",
-              "description": "A complete train-predict-plan pipeline on a single GPU in a few hours. The most accessible JEPA.",
-              "markdown": "future/hands-on/leworldmodel.md"
-            },
-            {
-              "name": "DreamerV3",
-              "slug": "dreamerv3",
-              "description": "Training agents in imagination: Nature 2025, Minecraft diamond, a single hyperparameter set.",
-              "markdown": "future/hands-on/dreamerv3.md"
-            },
-            {
-              "name": "DreamerV4",
-              "slug": "dreamerv4",
-              "description": "Playing inside a world model in real time with a joystick. Interactive demos.",
-              "markdown": "future/hands-on/dreamerv4.md"
-            },
-            {
-              "name": "NVIDIA Cosmos 3",
-              "slug": "cosmos3",
-              "description": "An omnimodal world model (text + image + video + action). NIM containers, production-grade.",
-              "markdown": "future/hands-on/cosmos3.md"
-            },
-            {
-              "name": "NVIDIA Isaac Sim",
-              "slug": "isaac-sim",
-              "description": "Robotics simulation, digital twins, sim-to-real. Free, an industry standard.",
-              "markdown": "future/hands-on/isaac-sim.md"
-            },
-            {
-              "name": "World Labs Marble",
-              "slug": "marble",
-              "description": "3D world generation in the browser: no GPU, no code. API available.",
-              "markdown": "future/hands-on/marble.md"
-            }
-          ]
-        },
-        {
-          "name": "Costs",
-          "slug": "costs",
-          "description": "Cost as compute and energy: 48× faster latent planning, model sizes, training/data cost, and the energy frontier at the edge.",
-          "markdown": "future/costs.md"
-        }
-      ]
+      "name": "LLM em Produção",
+      "slug": "llm-em-producao",
+      "description": "LLMs em produção. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
     },
     {
-      "name": "Authors",
-      "slug": "authors",
-      "description": "The student teams behind this site — Past, Present, and Future — each with their LinkedIn and Lattes profiles.",
-      "markdown": "authors/authors.md"
+      "name": "Agentic Coding",
+      "slug": "agentic-coding",
+      "description": "Agentic Coding. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
+    },
+    {
+      "name": "Generative Deep Learning",
+      "slug": "generative-deep-learning",
+      "description": "Generative Deep Learning. Conteúdo a ser publicado pelo grupo responsável após a apresentação."
     }
   ]
 }
