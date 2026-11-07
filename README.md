@@ -1,84 +1,92 @@
-# Intelligent Agents — course site
+# IA Generativa · wiki da turma
 
-Static site presenting the material for the **Intelligent Agents** course
-(PPGI · IC / UFAL · 2026.1), organized along the timeline **Past → Present → Future**.
+Wiki da disciplina **Inteligência Artificial Generativa** (PPGI058 · IC / UFAL · 2026.2).
+Cada grupo tem uma seção própria no menu lateral e a alimenta depois da sua apresentação:
 
-It is a **no-build** site: the browser reads a `structure.json` file that describes the
-page hierarchy and renders the Markdown content live. There is no server, framework, or
-compilation step, just HTML, CSS, and a single JavaScript file. That is why it runs
-directly on **GitHub Pages**.
+| # | Assunto | Pasta | Situação |
+|---|---|---|---|
+| 1 | Large Language Model | `content/large-language-model/` | publicado |
+| 2 | Small Language Model | `content/small-language-model/` | aguardando o grupo |
+| 3 | LLM em Produção | `content/llm-em-producao/` | aguardando o grupo |
+| 4 | Agentic Coding | `content/agentic-coding/` | aguardando o grupo |
+| 5 | Generative Deep Learning | `content/generative-deep-learning/` | aguardando o grupo |
 
-## How it works
+A seção de **Large Language Model** segue o livro *Build a Large Language Model (From
+Scratch)*, de Sebastian Raschka: teoria dos capítulos 1 a 3 (a partir dos slides) e a aula
+prática com os notebooks de
+[victorflll/LLMs-from-scratch](https://github.com/victorflll/LLMs-from-scratch/tree/main/30-09).
 
-- **`content/structure.json`** defines the tree of sections (sidebar, pages, navigation).
-- Each node in the tree is a **page**:
-  - a node **with `markdown`** renders that Markdown file (a content page);
-  - a node **with `children`** becomes a section page showing its description and
-    clickable *cards* for the subpages.
-- Navigation uses the URL **hash** (`#/present/best-practices/subagents`), so page
-  reloads and direct links work without any server configuration.
+É um site **sem build**: o navegador lê `content/structure.json`, que descreve a árvore de
+páginas, e renderiza o Markdown na hora. Não há servidor, framework nem compilação, só
+HTML, CSS e um arquivo JavaScript, por isso roda direto no **GitHub Pages**.
 
-Markdown is rendered with rich formatting: headings, lists, tables (with horizontal
-scrolling on mobile), syntax-highlighted code blocks, **Mermaid** diagrams, images, and
-an **inline PDF viewer** (every `.pdf` link becomes a card that opens the PDF inline).
+## Como funciona
 
-## Design
+- **`content/structure.json`** define a árvore de seções (sidebar, páginas, navegação).
+- Cada nó da árvore é uma **página**:
+  - nó **com `markdown`** renderiza aquele arquivo (página de conteúdo);
+  - nó **com `children`** vira uma página de seção com a descrição e *cards* para as subpáginas.
+- A navegação usa o **hash** da URL (`#/large-language-model/pratica/atencao`), então recarregar a página e links
+  diretos funcionam sem configurar servidor.
 
-*Obsidian glass* theme: dark background with frosty-glass elements, a background aurora,
-Fraunces / Hanken Grotesk / JetBrains Mono typography, smooth transitions, and
-collapsible items. Responsive layout with a side drawer on mobile.
+O Markdown é renderizado com títulos, listas, tabelas (com rolagem horizontal no celular),
+código com realce de sintaxe, diagramas **Mermaid**, imagens e um **visualizador de PDF
+inline** (todo link `.pdf` vira um card que abre o PDF na página).
 
-## Repository structure
+## Estrutura
 
 ```
-githubpages/
-├── index.html              # page shell (sidebar, top bar, CDN libs)
-├── .nojekyll               # disables Jekyll on GitHub Pages (serves _ / folders as-is)
+.
+├── index.html              # casca da página (sidebar, topo, libs via CDN)
+├── .nojekyll               # desativa o Jekyll no GitHub Pages
 ├── assets/
-│   ├── css/styles.css      # obsidian glass theme (design tokens in :root)
-│   ├── js/app.js           # router + renderer (fetch → marked → highlight)
+│   ├── css/styles.css      # tema obsidian glass (tokens de design em :root)
+│   ├── js/app.js           # roteador + renderizador (fetch → marked → highlight)
 │   └── images/             # favicons, logo
 └── content/
-    ├── structure.json      # << the course page tree
-    ├── past/               # Markdown + assets per section
-    ├── present/
-    └── future/             # papers (pdfs/) + world-model pages
+    ├── structure.json      # << a árvore de páginas do curso
+    ├── large-language-model/   # grupo 1
+    │   ├── teoria/             # caps. 1–3 + figuras/ + pdfs/ (slides)
+    │   ├── pratica/            # setup + 7 notebooks convertidos + figuras/
+    │   └── equipe/             # integrantes do grupo
+    └── <assunto-do-grupo>/     # grupos 2–5 criam a sua pasta aqui
 ```
 
-Each section keeps its own Markdown and *assets* (images, PDFs) next to the files that
-reference them, using relative paths.
+## Como o seu grupo publica o conteúdo
 
-## Editing the content
+A seção do seu grupo já existe em `content/structure.json`, mas ainda sem páginas (por isso
+aparece "Conteúdo em breve"). Para publicar:
 
-1. Write/edit Markdown inside `content/<section>/…`.
-2. Put images and PDFs next to the `.md` (or in a subfolder) and reference them with a
-   relative path, e.g. `![](figures/diagram.png)`, `[Paper](pdfs/paper.pdf)`.
-3. Register the page in `content/structure.json` with `name`, `slug`, `description`,
-   and `markdown` (content page) **or** `children` (section page).
-4. Use `kebab-case` *slugs*, unique among siblings.
+1. Crie as páginas Markdown na pasta do grupo, ex. `content/agentic-coding/visao-geral.md`,
+   com imagens e PDFs ao lado (`figuras/`, `pdfs/`).
+2. Em `content/structure.json`, adicione as páginas como `children` do nó do seu grupo,
+   na ordem de leitura. Use a seção **Large Language Model** como modelo (subseções
+   Teoria / Prática / Equipe do grupo).
+3. Não mexa nas seções dos outros grupos; prefira um pull request por grupo.
+4. Rode o site localmente e confira cada página antes de abrir o PR.
 
-## Running locally
+## Editando o conteúdo
 
-The browser blocks `fetch` over `file://`, so serve the folder over HTTP:
+1. Escreva/edite o Markdown em `content/<assunto>/…`.
+2. Coloque imagens e PDFs ao lado do `.md` e referencie com caminho relativo, ex.:
+   `![](figuras/diagrama.png)`, `[Slides](pdfs/slides.pdf)`.
+3. Registre a página em `content/structure.json` com `name`, `slug`, `description` e
+   `markdown` (página de conteúdo) **ou** `children` (página de seção).
+4. Use *slugs* em `kebab-case`, sem acentos, únicos entre irmãos.
+
+## Rodando localmente
+
+O navegador bloqueia `fetch` via `file://`, então sirva a pasta por HTTP:
 
 ```bash
 python3 -m http.server 8000
-# open http://localhost:8000
+# abra http://localhost:8000
 ```
 
-If you don't have Python, any static server works:
+## Publicação
 
-```bash
-npx serve .          # Node
-# or the VS Code "Live Server" extension ("Go Live" button)
-# open http://localhost:3000
-```
+É um site estático puro: basta servir o conteúdo do repositório no GitHub Pages. Não há
+nada para compilar.
 
-## Publishing
-
-It is a pure static site: just serve the contents of `githubpages/` on GitHub Pages
-(the `.nojekyll` file ensures folders and files are served without processing). There is
-nothing to compile.
-
-> Architecture details and maintenance conventions (including for AI agents) are in
-> [CLAUDE.md](CLAUDE.md).
+> Detalhes de arquitetura e convenções de manutenção (inclusive para agentes de IA) estão
+> em [CLAUDE.md](CLAUDE.md).
