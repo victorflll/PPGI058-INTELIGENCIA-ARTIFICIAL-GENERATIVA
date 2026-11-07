@@ -1,14 +1,14 @@
-# 04 · Pré-treino — *Lilian*
+# 04 · Pretraining — *Lilian*
 
-**Entra:** `GPTModel` (03) + dataloader (01). **Sai:** um modelo que aprendeu algo + os **pesos oficiais do GPT-2** → base dos notebooks 05 e 06.
+**In:** `GPTModel` (03) + dataloader (01). **Out:** a model that has learned something + the **official GPT-2 weights** → the basis for notebooks 05 and 06.
 
-Perguntas:
-1. Como o modelo aprende? O que é a loss?
-2. Removendo LayerNorm / FFN ou usando ReLU — o que muda **no treino**?
-3. Temperatura e top-k: por que o texto muda?
-4. Dá para pré-treinar um GPT-2 de verdade aqui? (spoiler: não — carregamos os pesos da OpenAI)
+Questions:
+1. How does the model learn? What is the loss?
+2. Removing LayerNorm / FFN or using ReLU — what changes **in training**?
+3. Temperature and top-k: why does the text change?
+4. Can we pretrain a real GPT-2 here? (spoiler: no — we load OpenAI's weights)
 
-> 📓 Página gerada a partir do notebook [`04_pre_treino.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/04_pre_treino.ipynb) (repositório *LLMs-from-scratch*, pasta `30-09`), com as saídas da última execução. Para rodar, veja o [setup da aula](setup.md).
+> 📓 Page generated from the notebook [`04_pre_treino.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/04_pre_treino.ipynb) (*LLMs-from-scratch* repository, `30-09` folder), with the outputs of its last run. To run it, see the [class setup](setup.md).
 
 ```python
 import contextlib
@@ -33,11 +33,11 @@ bpe = tiktoken.get_encoding("gpt2")
 device: mps
 ```
 
-## 1. A loss: quão surpreso o modelo fica com o token certo
-`cross_entropy` = −log(probabilidade dada ao token correto). Modelo aleatório ≈ −log(1/50257) ≈ 10,8.
+## 1. The loss: how surprised the model is by the correct token
+`cross_entropy` = −log(probability assigned to the correct token). Random model ≈ −log(1/50257) ≈ 10.8.
 
 ```python
-cfg = {**GPT_CONFIG_124M, "context_length": 256}  # contexto menor = treino mais rápido
+cfg = {**GPT_CONFIG_124M, "context_length": 256}  # smaller context = faster training
 texto = the_verdict()
 corte = int(0.9 * len(texto))
 train_loader = create_dataloader_v1(texto[:corte], batch_size=2, max_length=256, stride=256, shuffle=True, drop_last=True)
@@ -55,8 +55,8 @@ with torch.no_grad():
 loss inicial: 10.99  (esperado ≈ 10.82)
 ```
 
-## 2. Treinando (≈1–2 min)
-Loop do livro: `forward → loss → backward (gradientes) → optimizer.step (atualiza pesos)`.
+## 2. Training (≈1–2 min)
+The book's loop: `forward → loss → backward (gradients) → optimizer.step (updates weights)`.
 
 ```python
 torch.manual_seed(123)
@@ -113,12 +113,12 @@ plt.title("Treino cai, validação estaciona → overfitting")
 plt.show()
 ```
 
-![Saída 1 do notebook 04_pre_treino](figuras/04-pre-treino-1.png)
+![Output 1 of notebook 04_pre_treino](figures/04-pretraining-1.png)
 
-O conto tem ~5 mil tokens; o GPT-2 viu ~10 **bilhões** (WebText, 40 GB). Por isso o nosso modelo decora o texto
-(loss de treino → 0) mas não generaliza (validação para de cair).
+The short story has ~5 thousand tokens; GPT-2 saw ~10 **billion** (WebText, 40 GB). That's why our model memorizes the text
+(training loss → 0) but doesn't generalize (validation stops dropping).
 
-## 3. Temperatura e top-k
+## 3. Temperature and top-k
 
 ```python
 model.eval()
@@ -135,7 +135,7 @@ for ax, T in zip(axs, [0.5, 1.0, 3.0]):
 plt.show()
 ```
 
-![Saída 2 do notebook 04_pre_treino](figuras/04-pre-treino-2.png)
+![Output 2 of notebook 04_pre_treino](figures/04-pretraining-2.png)
 
 ```python
 torch.manual_seed(123)
@@ -151,10 +151,10 @@ T=1.5 top_k=25: 'Every effort moves you like the easWell--ed his by a year!"\nI 
 T=5.0 top_k=None: 'Every effort moves you Tr a)[ Mix Tiffany crit PeshFootnotelicense Lodge virtuallyMoscowKick Naked Memory ellTurkish Phant unwuations'
 ```
 
-Temperatura < 1 concentra (repetitivo), > 1 espalha (criativo → aleatório). Top-k corta a cauda de tokens absurdos.
+Temperature < 1 concentrates (repetitive), > 1 spreads out (creative → random). Top-k cuts off the tail of absurd tokens.
 
-## 4. 🔧 Ablações **com treino**: sem LayerNorm, sem FFN, ReLU
-Modelo menor (256 dims, 4 camadas) para caber em ~1 min; mesmo seed e mesmos dados para todos.
+## 4. 🔧 Ablations **with training**: without LayerNorm, without FFN, ReLU
+A smaller model (256 dims, 4 layers) so it fits in ~1 min; same seed and same data for all of them.
 
 ```python
 mini = {**cfg, "emb_dim": 256, "n_layers": 4, "n_heads": 4, "context_length": 128}
@@ -167,7 +167,7 @@ for nome, kw in {"original": {}, "sem LayerNorm": {"sem_norm": True}, "sem FFN":
     torch.manual_seed(123)
     m = variante(mini, **kw).to(device)
     opt = torch.optim.AdamW(m.parameters(), lr=1e-3, weight_decay=0.1)
-    with contextlib.redirect_stdout(io.StringIO()):  # silencia os prints do loop do livro
+    with contextlib.redirect_stdout(io.StringIO()):  # silences the prints from the book's loop
         tr, va, tok = train_model_simple(m, tl, vl, opt, device, num_epochs=8, eval_freq=5, eval_iter=5,
                                          start_context="Every", tokenizer=bpe)
     curvas[nome] = (tok, tr, va)
@@ -189,15 +189,15 @@ sem FFN        loss final treino=5.64  validação=6.66
 FFN com ReLU   loss final treino=3.85  validação=6.12
 ```
 
-![Saída 3 do notebook 04_pre_treino](figuras/04-pre-treino-3.png)
+![Output 3 of notebook 04_pre_treino](figures/04-pretraining-3.png)
 
-Leia o gráfico junto com a turma. No nosso run (M1, seed 123):
-- **sem FFN** aprende mais devagar: perdeu a maior parte da capacidade;
-- **sem LayerNorm** decora o treino mais rápido mas tem a **pior validação** — sinal descontrolado = otimização instável e overfitting;
-- **ReLU** fica praticamente igual ao GELU nessa escala (a diferença aparece em modelos grandes e treinos longos).
+Read the chart together with the class. In our run (M1, seed 123):
+- **without FFN** learns more slowly: it lost most of its capacity;
+- **without LayerNorm** memorizes the training set faster but has the **worst validation** — uncontrolled signal = unstable optimization and overfitting;
+- **ReLU** stays practically the same as GELU at this scale (the difference shows up in large models and long training runs).
 
-## 5. Pesos de verdade: GPT-2 124M da OpenAI
-Treinar isso do zero custou semanas de GPU. Carregamos os pesos (arquivo convertido para o nosso `GPTModel`).
+## 5. Real weights: OpenAI's GPT-2 124M
+Training this from scratch cost weeks of GPU time. We load the weights (file converted to our `GPTModel`).
 
 ```python
 gpt2, cfg_gpt2 = load_gpt2("124M")
@@ -222,13 +222,13 @@ with torch.no_grad():
 loss na validação do the-verdict — nosso modelo: 6.38 | GPT-2 oficial: 3.56
 ```
 
-O GPT-2 **nunca viu** esse conto e mesmo assim prevê melhor que o nosso modelo que o decorou — isso é generalização.
+GPT-2 **never saw** this short story and still predicts it better than our model that memorized it — that is generalization.
 
-### Existem alternativas ao Transformer?
-Sim, e várias já competem: **SSMs / Mamba** (estado recorrente, custo linear no contexto), **RWKV** (RNN treinável em paralelo),
-**atenção linear / Gated DeltaNet** (usada em híbridos como Qwen3-Next e Kimi Linear — ver `ch04/08_deltanet`)
-e **MoE**, que mantém o Transformer mas troca a FFN por vários especialistas (`ch04/07_moe`).
-Hoje a tendência é **híbrida**: algumas camadas de atenção completa + camadas lineares.
+### Are there alternatives to the Transformer?
+Yes, and several already compete: **SSMs / Mamba** (recurrent state, linear cost in the context length), **RWKV** (an RNN trainable in parallel),
+**linear attention / Gated DeltaNet** (used in hybrids such as Qwen3-Next and Kimi Linear — see `ch04/08_deltanet`)
+and **MoE**, which keeps the Transformer but replaces the FFN with several experts (`ch04/07_moe`).
+Today the trend is **hybrid**: some full-attention layers + linear layers.
 
-### ✅ Construto
-`load_gpt2("124M")` → modelo pré-treinado que será **ajustado** para classificar (05) e seguir instruções (06).
+### ✅ Construct
+`load_gpt2("124M")` → a pretrained model that will be **fine-tuned** to classify (05) and follow instructions (06).

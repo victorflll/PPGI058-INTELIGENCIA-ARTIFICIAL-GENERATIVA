@@ -1,15 +1,15 @@
-# 07 · Parâmetros, escala e outras famílias — *Cristiane*
+# 07 · Parameters, scale and other families — *Cristiane*
 
-Perguntas:
-1. Por que o GPT-2 tem esses valores? De onde surgiram?
-2. Quais as diferenças entre small, medium, large e XL?
-3. E se eu escalar tudo por 3? E se eu quiser chegar no GPT-3?
-4. O que é e onde entra o **viés** do modelo? E o **gradiente**?
-5. Llama, Claude, GPT-4/5… usam a mesma base?
+Questions:
+1. Why does GPT-2 have these values? Where did they come from?
+2. What are the differences between small, medium, large and XL?
+3. What if I scale everything by 3? What if I want to reach GPT-3?
+4. What is the model's **bias**, and where does it come in? And the **gradient**?
+5. Llama, Claude, GPT-4/5… do they use the same foundation?
 
-Os modelos grandes são criados no device `meta`: só formato, sem alocar memória — dá para "instanciar" até o GPT-3.
+The large models are created on the `meta` device: shape only, no memory allocated — so we can "instantiate" even GPT-3.
 
-> 📓 Página gerada a partir do notebook [`07_parametros.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/07_parametros.ipynb) (repositório *LLMs-from-scratch*, pasta `30-09`), com as saídas da última execução. Para rodar, veja o [setup da aula](setup.md).
+> 📓 Page generated from the notebook [`07_parametros.ipynb`](https://github.com/victorflll/LLMs-from-scratch/blob/main/30-09/07_parametros.ipynb) (*LLMs-from-scratch* repository, `30-09` folder), with the outputs of its last run. To run it, see the [class setup](setup.md).
 
 ```python
 import matplotlib.pyplot as plt
@@ -21,7 +21,7 @@ from aula import GPT_CONFIG_124M, GPT2_SIZES, device, load_gpt2, n_params
 from llms_from_scratch.ch04 import GPTModel
 
 bpe = tiktoken.get_encoding("gpt2")
-COMPARAR_355M = False  # 🔧 True baixa o GPT-2 medium (~1,4 GB) para comparar texto gerado
+COMPARAR_355M = False  # 🔧 True downloads GPT-2 medium (~1.4 GB) to compare generated text
 
 
 def contar(cfg):
@@ -30,15 +30,15 @@ def contar(cfg):
     total = n_params(m)
     return {
         "params (M)": total / 1e6,
-        "sem out_head (M)": (total - m.out_head.weight.numel()) / 1e6,  # GPT-2 original compartilha pesos com tok_emb
+        "sem out_head (M)": (total - m.out_head.weight.numel()) / 1e6,  # original GPT-2 shares weights with tok_emb
         "embeddings (M)": (m.tok_emb.weight.numel() + m.pos_emb.weight.numel()) / 1e6,
         "blocos (M)": sum(p.numel() for p in m.trf_blocks.parameters()) / 1e6,
         "float32 (GB)": total * 4 / 1e9,
-        "treino Adam ≈ (GB)": total * 16 / 1e9,  # pesos + gradientes + 2 estados do Adam, sem ativações
+        "treino Adam ≈ (GB)": total * 16 / 1e9,  # weights + gradients + 2 Adam states, no activations
     }
 ```
 
-## 1. As quatro versões do GPT-2
+## 1. The four versions of GPT-2
 
 ```python
 linhas = []
@@ -72,23 +72,23 @@ GPT-2 774M                 13.4
 GPT-2 1558M                26.2
 ```
 
-- O nome (124M, 355M…) conta os parâmetros **com** weight tying (`sem out_head`).
-- **head_dim é sempre 64**: a OpenAI cresceu largura e profundidade juntas mantendo cada cabeça do mesmo tamanho.
-- A fatia de embeddings cai de ~30% (small) para ~5% (XL): em modelos grandes quase tudo está nos blocos.
+- The name (124M, 355M…) counts the parameters **with** weight tying (`sem out_head`, i.e. without out_head).
+- **head_dim is always 64**: OpenAI grew width and depth together while keeping each head the same size.
+- The embeddings' share drops from ~30% (small) to ~5% (XL): in large models almost everything is in the blocks.
 
-## 2. De onde vêm esses números?
-| valor | origem |
+## 2. Where do these numbers come from?
+| value | origin |
 |---|---|
-| `vocab_size = 50257` | 256 bytes + 50.000 merges de BPE + `<|endoftext|>` |
-| `context_length = 1024` | dobro do GPT-1 (512); atenção é O(n²) em memória, era o que cabia nas GPUs de 2019 |
-| `emb_dim = 768`, 12 camadas, 12 heads | herdado do GPT-1 / BERT-base (que por sua vez veio do Transformer "base" 512 → 768) |
-| FFN = 4 × `emb_dim` | proporção do Transformer original (512 → 2048) |
-| tamanhos maiores | escolhidos para testar *scaling*: ~3× parâmetros a cada passo, head_dim fixo em 64 |
+| `vocab_size = 50257` | 256 bytes + 50,000 BPE merges + `<|endoftext|>` |
+| `context_length = 1024` | double GPT-1's (512); attention is O(n²) in memory, it was what fit on 2019 GPUs |
+| `emb_dim = 768`, 12 layers, 12 heads | inherited from GPT-1 / BERT-base (which in turn came from the "base" Transformer 512 → 768) |
+| FFN = 4 × `emb_dim` | ratio from the original Transformer (512 → 2048) |
+| larger sizes | chosen to test *scaling*: ~3× parameters at each step, head_dim fixed at 64 |
 
-Não são valores "mágicos": são escolhas empíricas limitadas por GPU. As *scaling laws* (Kaplan 2020, Chinchilla 2022)
-depois mostraram como dividir orçamento entre tamanho e dados (Chinchilla: ~20 tokens de treino por parâmetro).
+They are not "magic" values: they are empirical choices constrained by GPUs. The *scaling laws* (Kaplan 2020, Chinchilla 2022)
+later showed how to split the budget between size and data (Chinchilla: ~20 training tokens per parameter).
 
-### De onde vem cada parâmetro? (GPT-2 small)
+### Where does each parameter come from? (GPT-2 small)
 
 ```python
 with torch.device("meta"):
@@ -108,9 +108,9 @@ plt.xlabel("milhões de parâmetros"); plt.title("Por bloco: FFN ≈ 2× atenç�
 plt.show()
 ```
 
-![Saída 1 do notebook 07_parametros](figuras/07-parametros-1.png)
+![Output 1 of notebook 07_parametros](figures/07-parameters-1.png)
 
-## 3. 🔧 Escalando por 3
+## 3. 🔧 Scaling by 3
 
 ```python
 FATOR = 3  # 🔧
@@ -142,13 +142,13 @@ tudo × 3              10.1                40.4
 GPT-3 175B           700.9              2803.5
 ```
 
-- **Largura × 3 → blocos × 9** (os pesos são matrizes d×d: custo quadrático em `emb_dim`).
-- **Profundidade × 3 → blocos × 3** (linear em `n_layers`).
-- **GPT-3** é *o mesmo código* com outros números (+ atenção esparsa alternada, que omitimos): 175 bilhões de parâmetros,
-  ~700 GB só em float32 e ~2,8 TB para treinar com Adam. Escalar o código é trivial; escalar dados, GPUs e engenharia não.
+- **Width × 3 → blocks × 9** (the weights are d×d matrices: quadratic cost in `emb_dim`).
+- **Depth × 3 → blocks × 3** (linear in `n_layers`).
+- **GPT-3** is *the same code* with other numbers (+ alternating sparse attention, which we omit): 175 billion parameters,
+  ~700 GB in float32 alone and ~2.8 TB to train with Adam. Scaling the code is trivial; scaling data, GPUs and engineering is not.
 
-## 4. Viés (bias) e gradiente
-### 4a. O *termo* de viés: o `+ b` em `y = Wx + b`
+## 4. Bias and gradient
+### 4a. The bias *term*: the `+ b` in `y = Wx + b`
 
 ```python
 torch.manual_seed(123)
@@ -174,8 +174,8 @@ trf_blocks.1.att.W_key.bias              64
 17 vetores de viés | GPT-2 usa qkv_bias=True; Llama e a maioria dos modelos novos removem quase todos
 ```
 
-### 4b. O gradiente: quanto cada peso deve mudar para reduzir a loss
-Aparece no `loss.backward()` — é o que o otimizador usa no `optimizer.step()`.
+### 4b. The gradient: how much each weight should change to reduce the loss
+It shows up in `loss.backward()` — it is what the optimizer uses in `optimizer.step()`.
 
 ```python
 x = torch.randint(0, 50257, (2, 16))
@@ -193,10 +193,10 @@ plt.tight_layout(); plt.show()
 antes do backward: None
 ```
 
-![Saída 2 do notebook 07_parametros](figuras/07-parametros-2.png)
+![Output 2 of notebook 07_parametros](figures/07-parameters-2.png)
 
-### 4c. O *outro* viés: o que o modelo aprendeu dos dados
-O pré-treino absorve padrões (e preconceitos) do texto da internet. Veja o GPT-2 real:
+### 4c. The *other* bias: what the model learned from the data
+Pretraining absorbs patterns (and prejudices) from internet text. Look at the real GPT-2:
 
 ```python
 gpt2, cfg = load_gpt2("124M")
@@ -218,9 +218,9 @@ secretary  P(he)=0.061  P(she)=0.033
 doctor     P(he)=0.127  P(she)=0.060
 ```
 
-Esse viés entra **nos dados de pré-treino**, e é mitigado (não eliminado) no fine-tuning / alinhamento.
+This bias enters **through the pretraining data**, and is mitigated (not eliminated) during fine-tuning / alignment.
 
-## 5. 🔧 small vs medium gerando texto
+## 5. 🔧 small vs medium generating text
 
 ```python
 from llms_from_scratch.ch05 import generate, text_to_token_ids, token_ids_to_text
@@ -239,22 +239,22 @@ for tam in tamanhos:
 [124M] The most important idea in machine learning is that your results can be represented by a series of discrete mathematical equations. In this way, the more you know, the easier it is to predict a given problem as it is likely to develop in the
 ```
 
-## 6. Outras famílias usam a mesma base?
-Sim — praticamente todo LLM atual é um **Transformer só-decoder** como o nosso, com trocas de peças:
+## 6. Do other families use the same foundation?
+Yes — practically every current LLM is a **decoder-only Transformer** like ours, with some parts swapped:
 
 | | GPT-2 (2019) | GPT-3 (2020) | Llama 2/3 | Qwen3 / Gemma 3 |
 |---|---|---|---|---|
-| normalização | LayerNorm (pre-norm) | LayerNorm | **RMSNorm** | RMSNorm (+ QK-norm) |
-| posição | embedding aprendido | aprendido | **RoPE** | RoPE |
+| normalization | LayerNorm (pre-norm) | LayerNorm | **RMSNorm** | RMSNorm (+ QK-norm) |
+| position | learned embedding | learned | **RoPE** | RoPE |
 | FFN | GELU | GELU | **SwiGLU** | SwiGLU / GeGLU |
-| atenção | multi-head | + esparsa alternada | **GQA** | GQA (+ janela deslizante no Gemma) |
-| bias | sim | sim | **não** | não |
-| contexto | 1024 | 2048 | 4k → 128k | 32k → 128k+ |
+| attention | multi-head | + alternating sparse | **GQA** | GQA (+ sliding window in Gemma) |
+| bias | yes | yes | **no** | no |
+| context | 1024 | 2048 | 4k → 128k | 32k → 128k+ |
 
-O repositório converte **este mesmo código** em Llama passo a passo: `ch05/07_gpt_to_llama/`
-(e Qwen3, Gemma 3, OLMo 3 em `ch05/11_qwen3`, `12_gemma3`, `13_olmo3`).
+The repository converts **this very code** into Llama step by step: `ch05/07_gpt_to_llama/`
+(and Qwen3, Gemma 3, OLMo 3 in `ch05/11_qwen3`, `12_gemma3`, `13_olmo3`).
 
-**GPT-4, GPT-5 e os modelos da Anthropic (Claude):** arquitetura, nº de parâmetros e dados **não são divulgados**.
-O que é público: são Transformers decoder, multimodais, com contexto longo e treinados com RLHF/alinhamento.
-Números como "GPT-4 = 1,8T com MoE" circulam, mas são **rumores sem confirmação oficial** — não usar como fato.
-Para ver a mesma receita em escala com pesos abertos: Llama 3, Qwen3, DeepSeek-V3 (MoE, 671B totais / 37B ativos).
+**GPT-4, GPT-5 and Anthropic's models (Claude):** architecture, parameter count and data are **not disclosed**.
+What is public: they are decoder Transformers, multimodal, with long context and trained with RLHF/alignment.
+Figures like "GPT-4 = 1.8T with MoE" circulate, but they are **rumors without official confirmation** — don't use them as fact.
+To see the same recipe at scale with open weights: Llama 3, Qwen3, DeepSeek-V3 (MoE, 671B total / 37B active).
