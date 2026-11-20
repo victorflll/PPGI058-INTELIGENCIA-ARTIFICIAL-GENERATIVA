@@ -11,11 +11,11 @@ We explore the main concepts behind **Large Language Models (LLMs)**, from their
 | Ch. 3 | Coding attention mechanisms | [Theory](03-attention-mechanisms.md) · [Notebook 02](../practice/02-attention.md) |
 | Ch. 4 | Implementing a GPT model from scratch to generate text | [Notebook 03](../practice/03-gpt-and-generation.md) |
 | Ch. 5 | Pretraining on unlabeled data | [Notebook 04](../practice/04-pretraining.md) |
-| Ch. 6 | Fine-tuning for classification | [Notebook 05](../practice/05-classifier.md) |
+| Ch. 6 | Fine-tuning for classification | [Theory](06-fine-tuning-for-classification.md) · [Notebook 05](../practice/05-classifier.md) |
 | Ch. 7 | Fine-tuning to follow instructions | [Notebook 06](../practice/06-assistant.md) |
 | Extra | Why these parameters? From GPT-2 to GPT-3, Llama and Claude | [Notebook 07](../practice/07-parameters.md) |
 
-The **Theory** section follows the presentation slides (chapters 1 to 3). The **Practice** section contains the class notebooks, with the code and outputs of every experiment.
+The **Theory** section follows the presentation slides (chapters 1 to 3) and adds chapter 6, fine-tuning for classification. The **Practice** section contains the class notebooks, with the code and outputs of every experiment.
 
 ## The three stages
 
