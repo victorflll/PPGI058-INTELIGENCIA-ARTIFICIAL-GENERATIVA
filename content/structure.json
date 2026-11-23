@@ -8,12 +8,12 @@
     {
       "name": "Large Language Model",
       "slug": "large-language-model",
-      "description": "Building an LLM from scratch, following Sebastian Raschka's Build a Large Language Model (From Scratch): the theory of chapters 1 to 3 and a hands-on class in notebooks, from the tokenizer to a GPT-2 that follows instructions.",
+      "description": "Building an LLM from scratch, following Sebastian Raschka's Build a Large Language Model (From Scratch): the theory of chapters 1 to 3 and 6 and a hands-on class in notebooks, from the tokenizer to a GPT-2 that follows instructions.",
       "children": [
         {
           "name": "Theory",
           "slug": "theory",
-          "description": "The concepts behind LLMs, following chapters 1 to 3 of the book: what an LLM is and the Transformer architecture, how text becomes numeric input, and how the attention mechanism works.",
+          "description": "The concepts behind LLMs, following chapters 1 to 3 and 6 of the book: what an LLM is and the Transformer architecture, how text becomes numeric input, how the attention mechanism works, and how to fine-tune a pretrained model as a classifier.",
           "children": [
             {
               "name": "Overview",
@@ -38,6 +38,12 @@
               "slug": "attention-mechanisms",
               "description": "The long-sequence problem, Query/Key/Value, attention scores, self-attention, context vector, causal mask, and multi-head attention, with a worked numeric example.",
               "markdown": "large-language-model/theory/03-attention-mechanisms.md"
+            },
+            {
+              "name": "Ch. 6 · Fine-tuning for classification",
+              "slug": "fine-tuning-for-classification",
+              "description": "Turning a pretrained LLM into a classifier: instruction vs. classification fine-tuning, preparing and padding a labeled dataset, replacing the output head, choosing which layers to train, why only the last token is used, loss and accuracy, and a spam classifier.",
+              "markdown": "large-language-model/theory/06-fine-tuning-for-classification.md"
             }
           ]
         },
